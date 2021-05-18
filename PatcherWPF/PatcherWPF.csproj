@@ -69,7 +69,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Source\Gzip.cs" />
-    <Compile Include="Source\FormConnector.cs" />
     <Compile Include="Source\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -107,6 +106,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\sylia_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Source\sylia_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Source\sylia_logo - Copie.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

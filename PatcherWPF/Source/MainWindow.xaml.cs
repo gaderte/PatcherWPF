@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace PatcherWPF
 {
@@ -26,21 +27,20 @@ namespace PatcherWPF
         private static bool isShowed = false;
         bool _shown;
 
-        private static Source.FormConnector test;
-        Source.Window1 form;
-
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
+        Source.Window1 form = new Source.Window1();
 
         public MainWindow()
         {
             InitializeComponent();
             startBtn.IsEnabled = false;
+            LocationChanged += new EventHandler(Window_LocationChanged);
         }
 
-        private void MainWindow_Load(object sender, RoutedEventArgs e)
+        private void Window_LocationChanged(object sender, EventArgs e)
         {
-            test = new Source.FormConnector(this);
+            form.Top = this.Top + this.Height;
+            form.Left = this.Left;
+            coord = new Point(this.Left, this.Top);
         }
 
         private void quitOnClick(object sender, RoutedEventArgs e)
@@ -55,9 +55,10 @@ namespace PatcherWPF
             if (_shown) return;
             _shown = true;
 
+            form.Show();
+            form.Visibility = Visibility.Hidden;
+
             coord = new Point(this.Left, this.Top);
-            form = new Source.Window1();
-            test.ConnectForm(form);
             //PATCH
             File.Delete(@"./patchlog.txt");
             WriteLog("Connexion au serveur...\n");
@@ -266,8 +267,18 @@ namespace PatcherWPF
             else
             {
                 isShowed = true;
-                form.Show();
+                form.Visibility = Visibility.Visible;
             }
+        }
+
+        private void test_Click(object send, RoutedEventArgs e)
+        {
+            testBtn.Opacity = 1;
+        }
+
+        private void test_Pressed(object send, RoutedEventArgs e)
+        {
+            testBtn.Opacity = 0.5;
         }
     }
 }

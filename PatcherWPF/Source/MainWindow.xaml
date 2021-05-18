@@ -5,16 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PatcherWPF"
         mc:Ignorable="d" Height="480" Width="750" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
-        Loaded="MainWindow_Load" MouseDown="Window_MouseDown">
-    <Canvas x:Name="CanvasPrincipal" HorizontalAlignment="Left" Width="750" RenderTransformOrigin="0.5,0.738" Height="480" VerticalAlignment="Top">
-        <Image x:Name="picLogo" Height="135" Canvas.Left="20" Canvas.Top="20" Width="135" Source="sylia_logo.png"/>
-        <ProgressBar x:Name="barAvAct" Height="10" Canvas.Left="74" Canvas.Top="404" Width="600" Foreground="#FF0615B0"/>
-        <ProgressBar x:Name="barAvTot" Height="10" Canvas.Left="74" Canvas.Top="430" Width="600" Foreground="Lime"/>
-        <Button x:Name="startBtn" Content="Start" Canvas.Left="310" Canvas.Top="329" Width="130" Height="50" IsEnabled="False" HorizontalAlignment="Center" Click="startBtn_Click"/>
+        MouseDown="Window_MouseDown">
+    <Window.Resources>
+        <!-- This style is used for buttons, to remove the WPF default 'animated' mouse over effect -->
+        <Style x:Key="MyButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="0"
+                        Padding="4,2" 
+                        BorderBrush="DarkGray" 
+                        CornerRadius="3" 
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+        <Canvas x:Name="CanvasPrincipal" HorizontalAlignment="Left" Width="750" RenderTransformOrigin="0.823,0.812" Height="480" VerticalAlignment="Top">
+        <Image x:Name="picLogo" Height="135" Canvas.Left="310" Canvas.Top="20" Width="135" Source="sylia_logo.png"/>
+        <ProgressBar x:Name="barAvAct" Height="10" Canvas.Left="32" Canvas.Top="408" Width="600" Foreground="#FF0615B0"/>
+        <ProgressBar x:Name="barAvTot" Height="10" Canvas.Left="32" Canvas.Top="434" Width="600" Foreground="Lime"/>
+        <Button x:Name="startBtn" Content="Start" Canvas.Left="649" Canvas.Top="408" Width="83" Height="36" IsEnabled="False" HorizontalAlignment="Center" Click="startBtn_Click"/>
         <Button x:Name="optionsBtn" Content="Options" Canvas.Left="336" Canvas.Top="460" Width="76" Click="optionsBtn_Click"/>
-        <Label x:Name="filesLeft" Content="1/1" Canvas.Left="359" Canvas.Top="408"/>
+        <Label x:Name="filesLeft" Content="1/1" Canvas.Left="604" Canvas.Top="377" RenderTransformOrigin="-2.454,0.761"/>
         <Button x:Name="quitButton" Content="X" Canvas.Left="710" Canvas.Top="20" Width="20" Click="quitOnClick"/>
-        <Button x:Name="discordBtn" Content="Discord" Canvas.Left="657" Canvas.Top="212" Width="75" Click="discordBtn_Click"/>
-        <Button x:Name="siteWebBtn" Content="Site Web" Canvas.Left="657" Canvas.Top="252" Width="75" Click="siteWebBtn_Click"/>
+        <Button x:Name="discordBtn" Content="Discord" Canvas.Left="612" Canvas.Top="240" Width="128" Click="discordBtn_Click" Cursor="Hand"/>
+        <Button x:Name="siteWebBtn" Content="Site Web" Canvas.Left="612" Canvas.Top="265" Width="128" Click="siteWebBtn_Click" Cursor="Hand"/>
+        <Button x:Name="inscriptionBtn" Content="Inscription" Canvas.Left="612" Canvas.Top="290" Width="128" Click="siteWebBtn_Click" IsEnabled="False"/>
+        <Button x:Name="testBtn" Style="{StaticResource MyButtonStyle}" Content="" Canvas.Left="310" Canvas.Top="217" Width="135" Height="135" Margin="0,0,0,-1" ScrollViewer.VerticalScrollBarVisibility="Disabled" PreviewMouseLeftButtonDown="test_Pressed" Click="test_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="sylia_logo.png"/>
+            </Button.Background>
+        </Button>
     </Canvas>
 </Window>
