@@ -108,8 +108,5 @@
   <ItemGroup>
     <Resource Include="Resource\sylia_logo.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Source\sylia_logo.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
