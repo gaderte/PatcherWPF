@@ -26,6 +26,8 @@ namespace PatcherWPF
         private static int NBR_FILE_TO_DLL = 0;
         private static int NBR_ATM = 1;
 
+        DateTime _startedAt;
+
         private static bool isShowed = false;
         bool _shown;
 
@@ -148,6 +150,8 @@ namespace PatcherWPF
             {
                 WriteLog("Tous les fichiers sont à jour\n");
                 filesLeft.Content = "1 / 1";
+                dllLeft.Content = "Téléchargement terminé";
+                vitesseDLL.Content = "0.00 Mo/s";
                 barAvAct.Value = 100;
                 barAvTot.Value = 100;
                 startBtn.IsEnabled = true;
@@ -250,13 +254,32 @@ namespace PatcherWPF
 
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
+            if (_startedAt == default(DateTime))
+            {
+                _startedAt = DateTime.Now;
+            }
+            else
+            {
+                var timeSpan = DateTime.Now - _startedAt;
+                try
+                {
+                    var bytesPerSecond = e.BytesReceived / (long)timeSpan.TotalSeconds;
+                    vitesseDLL.Content = (bytesPerSecond / 1024d / 1024d).ToString("0.00") + " Mo/s";
+                } catch(System.DivideByZeroException x)
+                {
+                    vitesseDLL.Content = "0.00 Mo/s";
+                }
+                    
+            }
+            dllLeft.Content = string.Format("{0} Mo / {1} Mo",
+                (e.BytesReceived / 1024d / 1024d).ToString("0.00"),
+                (e.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
             barAvAct.Value = e.ProgressPercentage;
         }
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
             string filename = ((WebClient)(sender)).QueryString["file"];
-            WriteLog("Téléchargement terminé !\n");
             barAvTot.Value = NBR_ATM * 100 / NBR_FILE_TO_DLL;
             filesLeft.Content = NBR_ATM + " / " + NBR_FILE_TO_DLL;
             NBR_ATM++;
@@ -266,6 +289,12 @@ namespace PatcherWPF
             }
             Source.Gzip.Decompress(new FileInfo("./" + filename + ".gz"));
             File.Delete("./" + filename + ".gz");
+            int size = FILE_TO_DOWNLOAD.Count();
+            if(filename == FILE_TO_DOWNLOAD[size-1])
+            {
+                dllLeft.Content = "Téléchargement terminé";
+                vitesseDLL.Content = "0.00 Mo/s";
+            }
         }
 
         private void startBtn_Click(object sender, RoutedEventArgs e)
@@ -273,7 +302,7 @@ namespace PatcherWPF
             saveOptions();
 
             //On lance le jeu
-            Process.Start("./Neuz.exe", "62.210.104.245 sunkist");
+            Process.Start("Neuz.exe", "62.210.104.245 sunkist");
             Application.Current.Shutdown();
         }
 
