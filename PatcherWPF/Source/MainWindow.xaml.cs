@@ -53,7 +53,14 @@ namespace PatcherWPF
 
         private void window_Loaded(object sender, EventArgs e)
         {
-            string[] neuz_ini = File.ReadAllLines("./neuz.ini");
+            string path = "./neuz.ini";
+
+            if (!File.Exists(path))
+            {
+                MessageBox.Show("Le fichier Neuz.ini n'existe pas ! Verifiez que vous avez bien placé le launcher dans le dossier de jeu FlyFF !", "Fichier manquant !");
+            }
+
+            string[] neuz_ini = File.ReadAllLines(path);
 
             string[] temp_res = neuz_ini[3].Split(' ');
             string[] temp_fullscreen = neuz_ini[4].Split(' ');
@@ -371,7 +378,14 @@ namespace PatcherWPF
 
         public void saveOptions()
         {
-            string[] neuz = File.ReadAllLines("./neuz.ini");
+            string path = "./neuz.ini";
+
+            if (!File.Exists(path))
+            {
+                MessageBox.Show("Le fichier Neuz.ini n'existe pas ! Verifiez que vous avez bien placé le launcher dans le dossier de jeu FlyFF !", "Fichier manquant !");
+            }
+
+            string[] neuz = File.ReadAllLines(path);
             if (NEUZ_N_RESOLUTION != "")
             {
                 string[] temp = NEUZ_N_RESOLUTION.Split('x');
