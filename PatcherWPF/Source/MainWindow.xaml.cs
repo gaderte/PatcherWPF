@@ -5,11 +5,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace PatcherWPF
 {
@@ -21,6 +20,7 @@ namespace PatcherWPF
         private static readonly string SERVER_URL = "http://62.210.104.245/patcherupdate/";
         private static readonly string DISCORD_LINK = "https://discord.gg/AZkdPNURhd";
         private static readonly string WEBSITE_URL = "https://www.google.com";
+        private static readonly string NEWS_URL = "http://62.210.104.245/news/news.json";
 
         private static List<string> FILE_TO_DOWNLOAD = new List<string>();
         private static int NBR_FILE_TO_DLL = 0;
@@ -44,7 +44,6 @@ namespace PatcherWPF
         private static string NEUZ_N_SIGHT = "";
         private static string NEUZ_N_TEXTURE = "";
         private static string NEUZ_N_DETAILS = "";
-
 
         public MainWindow()
         {
@@ -138,6 +137,7 @@ namespace PatcherWPF
             WriteLog("Connecté au serveur !\n");
             //Téléchagement et décompression de la liste
             DownloadList();
+            DownloadNews();
             string pat = "./list.txt.gz";
             Source.Gzip.Decompress(new FileInfo(pat));
             File.Delete("./list.txt.gz");
@@ -145,6 +145,10 @@ namespace PatcherWPF
             //Lecture liste
             string[] list = File.ReadAllLines("./list.txt");
             readList(list);
+
+            string news = File.ReadAllText("news.json");
+            readNews(news);
+            File.Delete("news.json");
 
             if (FILE_TO_DOWNLOAD.Count == 0)
             {
@@ -172,6 +176,17 @@ namespace PatcherWPF
             for (it = 2; it < list.Length; it++)
             {
                 readLine(list[it]);
+            }
+        }
+
+        private void readNews(string txtNews)
+        {
+            Source.ListNews test = JsonConvert.DeserializeObject<Source.ListNews>(txtNews);
+            newsLabel.Content += "\n\n";
+            foreach(Source.News x in test.news)
+            {
+                newsLabel.Content += x.date + " - " + x.title + " : \n" + x.content;
+                newsLabel.Content += "\n\n -----------------------------------------\n\n";
             }
         }
 
@@ -239,6 +254,13 @@ namespace PatcherWPF
             WriteLog("Liste téléchargée\n");
 
         }
+        private void DownloadNews()
+        {
+            WebClient webClient = new WebClient();
+            webClient.DownloadFile(new Uri(NEWS_URL), "news.json");
+            WriteLog("News téléchargées\n");
+        }
+
         private void DownloadFile(string filename)
         {
             string tempUrl = SERVER_URL + filename;

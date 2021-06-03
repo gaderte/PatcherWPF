@@ -59,7 +59,7 @@
                 <ImageBrush ImageSource="sylia_logo.png"/>
             </Button.Background>
         </Button>
-        <Label Content="News :&#xD;&#xA;&#xD;&#xA;19/05/2021 - Nouveau Patcher&#xD;&#xA; - Exemple pour le screenshot :D" Canvas.Left="232" Canvas.Top="184" Height="165" Width="290" BorderThickness="0" BorderBrush="#00000000" FontStyle="Italic" Background="#FF101010" Foreground="Gold"/>
+        <Label x:Name="newsLabel" Content="News :" Canvas.Left="232" Canvas.Top="184" Height="162" Width="287" BorderThickness="0" BorderBrush="#00000000" FontStyle="Italic" Background="#FF101010" Foreground="Gold" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
         <Label x:Name="vitesseDLL" Content="0 o/s" Canvas.Left="336" Canvas.Top="413" Width="76" HorizontalContentAlignment="Center" Foreground="White"/>
         <Label x:Name="dllLeft" Content="0 Mo" Canvas.Left="32" Canvas.Top="444" Width="173" HorizontalContentAlignment="Center" Foreground="White"/>
         <Canvas x:Name="CanvasOptions" Height="90" Canvas.Left="0" Canvas.Top="480" Width="750" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="Visible" Background="White" Opacity="0">
