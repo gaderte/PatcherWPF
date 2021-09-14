@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PatcherWPF"
-        mc:Ignorable="d" Height="570" Width="750" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
+        mc:Ignorable="d" Height="650" Width="750" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
         MouseDown="Window_MouseDown" Loaded="window_Loaded"
-        AllowsTransparency="True" Icon="sylia_logo.png">
+        AllowsTransparency="True" Icon="sylia_logo.png" Margin="0" Background="#00000000" BorderBrush="Black" BorderThickness="0">
     <Window.Resources>
         <!-- This style is used for buttons, to remove the WPF default 'animated' mouse over effect -->
         <Style x:Key="MyButtonStyle" TargetType="Button">
@@ -33,23 +33,20 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Window.Background>
-        <ImageBrush TileMode="Tile" ImageSource="testxd.png"/>
-    </Window.Background>
-    <Canvas x:Name="CanvasPrincipal" HorizontalAlignment="Left" Width="750" RenderTransformOrigin="0.495,0.517" Height="480" Margin="0,0,0,90">
+    <Canvas x:Name="CanvasPrincipal" HorizontalAlignment="Left" Width="750" RenderTransformOrigin="0.495,0.517" Margin="0,0,0,170" Height="480">
         <Canvas.Background>
-            <ImageBrush ImageSource="fond.jpg"/>
+            <ImageBrush ImageSource="fond.jpg" TileMode="Tile"/>
         </Canvas.Background>
         <Image x:Name="picLogo" Height="128" Canvas.Left="311" Canvas.Top="20" Width="128" Source="sylia_logo.png">
             <Image.OpacityMask>
                 <ImageBrush ImageSource="Logo Sylia FlyFF.png"/>
             </Image.OpacityMask>
         </Image>
-        <ProgressBar x:Name="barAvAct" Height="10" Canvas.Left="32" Canvas.Top="408" Width="600" Foreground="#FF0615B0"/>
-        <ProgressBar x:Name="barAvTot" Height="10" Canvas.Left="32" Canvas.Top="434" Width="600" Foreground="Lime"/>
-        <Button x:Name="startBtn" Content="Start" Canvas.Left="649" Canvas.Top="408" Width="83" Height="36" IsEnabled="False" HorizontalAlignment="Center" Click="startBtn_Click"/>
-        <Button x:Name="optionsBtn" Content="Options" Canvas.Left="336" Canvas.Top="456" Width="76" Click="optionsBtn_Click"/>
-        <Label x:Name="filesLeft" Content="1/1" Canvas.Left="585" Canvas.Top="377" RenderTransformOrigin="0.5,0.5" Foreground="White"/>
+        <ProgressBar x:Name="barAvAct" Height="10" Canvas.Left="32" Canvas.Top="402" Width="600" Foreground="#FF0615B0"/>
+        <ProgressBar x:Name="barAvTot" Height="10" Canvas.Left="32" Canvas.Top="428" Width="600" Foreground="Lime"/>
+        <Button x:Name="startBtn" Content="Start" Canvas.Left="649" Canvas.Top="402" Width="83" Height="36" IsEnabled="False" HorizontalAlignment="Center" Click="startBtn_Click"/>
+        <Button x:Name="optionsBtn" Content="Options" Canvas.Left="336" Canvas.Top="450" Width="76" Click="optionsBtn_Click"/>
+        <Label x:Name="filesLeft" Content="1/1" Canvas.Left="585" Canvas.Top="371" RenderTransformOrigin="0.5,0.5" Foreground="White"/>
         <Button x:Name="quitButton" Content="X" Canvas.Left="710" Canvas.Top="20" Width="20" Click="quitOnClick"/>
         <Button x:Name="discordBtn" Content="Discord" Canvas.Left="612" Canvas.Top="240" Width="128" Click="discordBtn_Click" Cursor="Hand"/>
         <Button x:Name="siteWebBtn" Content="Site Web" Canvas.Left="612" Canvas.Top="265" Width="128" Click="siteWebBtn_Click" Cursor="Hand"/>
@@ -59,10 +56,10 @@
                 <ImageBrush ImageSource="sylia_logo.png"/>
             </Button.Background>
         </Button>
-        <Label x:Name="newsLabel" Content="News :" Canvas.Left="232" Canvas.Top="184" Height="162" Width="287" BorderThickness="0" BorderBrush="#00000000" FontStyle="Italic" Background="#FF101010" Foreground="Gold" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
-        <Label x:Name="vitesseDLL" Content="0 o/s" Canvas.Left="336" Canvas.Top="413" Width="76" HorizontalContentAlignment="Center" Foreground="White"/>
-        <Label x:Name="dllLeft" Content="0 Mo" Canvas.Left="32" Canvas.Top="444" Width="173" HorizontalContentAlignment="Center" Foreground="White"/>
-        <Canvas x:Name="CanvasOptions" Height="90" Canvas.Left="0" Canvas.Top="480" Width="750" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="Visible" Background="White" Opacity="0">
+        <Label x:Name="newsLabel" Content="News :" Canvas.Left="232" Canvas.Top="184" Height="161" Width="287" BorderThickness="0" BorderBrush="#00000000" FontStyle="Italic" Background="#FF101010" Foreground="Gold" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
+        <Label x:Name="vitesseDLL" Content="0 o/s" Canvas.Left="336" Canvas.Top="407" Width="76" HorizontalContentAlignment="Center" Foreground="White"/>
+        <Label x:Name="dllLeft" Content="0 Mo" Canvas.Left="32" Canvas.Top="438" Width="173" HorizontalContentAlignment="Center" Foreground="White"/>
+        <Canvas x:Name="CanvasOptions" Height="170" Canvas.Top="481" Width="750" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="Visible" OpacityMask="Black" Background="White" Opacity="0">
             <Label Content="Résolution :" Canvas.Left="33" Canvas.Top="6" FontSize="11"/>
             <ComboBox x:Name="choixResolution" Canvas.Left="16" Canvas.Top="34" Width="99" Height="24" SelectionChanged="choixResolution_SelectionChanged">
                 <ComboBoxItem>800x600</ComboBoxItem>
@@ -98,6 +95,15 @@
             <Label Content="Faibles" Canvas.Left="696" Canvas.Top="61" FontSize="10"/>
             <Label Content="Détaillées" Canvas.Left="444" Canvas.Top="61" FontSize="10"/>
             <Label Content="Détaillées" Canvas.Left="596" Canvas.Top="61" FontSize="10"/>
+            <CheckBox x:Name="mipMapping" Content="Mip Mapping" Canvas.Left="26" Canvas.Top="124" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311"/>
+            <CheckBox x:Name="Antialiasing" Content="Antialiasing" Canvas.Left="173" Canvas.Top="124" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311"/>
+            <CheckBox x:Name="Anisotropique" Content="Anisotropique" Canvas.Left="340" Canvas.Top="124" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311"/>
+            <Slider x:Name="displayName" Canvas.Left="502" Canvas.Top="113" Width="184" Maximum="3" SmallChange="1" TickPlacement="Both" ValueChanged="displayName_ValueChanged" IsSnapToTickEnabled="True" IsDirectionReversed="True" Value="3"/>
+            <Label Content="Distance affichage des noms" Canvas.Left="520" Canvas.Top="89" FontSize="11"/>
+            <Label Content="Court" Canvas.Left="548" Canvas.Top="143" FontSize="10"/>
+            <Label Content="Moyen" Canvas.Left="602" Canvas.Top="143" FontSize="10"/>
+            <Label Content="Très court" Canvas.Left="481" Canvas.Top="143" FontSize="10"/>
+            <Label Content="Loin" Canvas.Left="666" Canvas.Top="143" FontSize="10"/>
         </Canvas>
     </Canvas>
 </Window>

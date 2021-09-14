@@ -37,6 +37,10 @@ namespace PatcherWPF
         private static string NEUZ_SIGHT;
         private static string NEUZ_TEXTURE;
         private static string NEUZ_DETAILS;
+        private static bool NEUZ_ANTIALIASING;
+        private static bool NEUZ_ANISOTROPIC;
+        private static bool NEUZ_MIPMAP;
+        private static string NEUZ_NVD;
 
         private static string NEUZ_N_RESOLUTION = "";
         private static bool NEUZ_N_FULLSCREEN = NEUZ_FULLSCREEN;
@@ -44,6 +48,10 @@ namespace PatcherWPF
         private static string NEUZ_N_SIGHT = "";
         private static string NEUZ_N_TEXTURE = "";
         private static string NEUZ_N_DETAILS = "";
+        private static bool NEUZ_N_ANTIALIASING = NEUZ_ANTIALIASING;
+        private static bool NEUZ_N_ANISOTROPIC = NEUZ_ANISOTROPIC;
+        private static bool NEUZ_N_MIPMAP = NEUZ_MIPMAP;
+        private static string NEUZ_N_NVD = "";
 
         public MainWindow()
         {
@@ -75,20 +83,21 @@ namespace PatcherWPF
             string[] temp_sight = neuz_ini[6].Split(' ');
             string[] temp_texture = neuz_ini[5].Split(' ');
             string[] temp_detail = neuz_ini[7].Split(' ');
+            string[] temp_antialiasing = neuz_ini[10].Split(' ');
+            string[] temp_anisotropic = neuz_ini[11].Split(' ');
+            string[] temp_mipmap = neuz_ini[12].Split(' ');
+            string[] temp_nvd = neuz_ini[13].Split(' ');
 
+            NEUZ_FULLSCREEN = temp_fullscreen[1] == "0" ? false : true;
             NEUZ_RESOLUTION = temp_res[1] + "x" + temp_res[2];
-            if (temp_fullscreen[1] == "0")
-            {
-                NEUZ_FULLSCREEN = false;
-            }
-            else
-            {
-                NEUZ_FULLSCREEN = true;
-            }
             NEUZ_SHADOW = temp_shadow[1];
             NEUZ_SIGHT = temp_sight[1];
             NEUZ_TEXTURE = temp_texture[1];
             NEUZ_DETAILS = temp_detail[1];
+            NEUZ_ANTIALIASING = temp_antialiasing[1] == "0" ? false : true;
+            NEUZ_ANISOTROPIC = temp_anisotropic[1] == "0" ? false : true;
+            NEUZ_MIPMAP = temp_mipmap[1] == "0" ? false : true;
+            NEUZ_NVD = temp_nvd[1];
         }
 
         private void quitOnClick(object sender, RoutedEventArgs e)
@@ -107,10 +116,10 @@ namespace PatcherWPF
             var comboBoxItem = choixResolution.Items.OfType<ComboBoxItem>().FirstOrDefault(x => x.Content.ToString() == NEUZ_RESOLUTION);
             int choix = choixResolution.SelectedIndex = choixResolution.Items.IndexOf(comboBoxItem);
             choixResolution.SelectedIndex = choix;
-            if (NEUZ_FULLSCREEN)
-            {
-                fullscreen.IsChecked = true;
-            }
+            if (NEUZ_FULLSCREEN) fullscreen.IsChecked = true;
+            if (NEUZ_ANTIALIASING) Antialiasing.IsChecked = true;
+            if (NEUZ_ANISOTROPIC) Anisotropique.IsChecked = true;
+            if (NEUZ_MIPMAP) mipMapping.IsChecked = true;
             int.TryParse(NEUZ_SIGHT, out int tempsight);
             sightBar.Value = tempsight;
             int.TryParse(NEUZ_SHADOW, out int tempshadow);
@@ -119,6 +128,8 @@ namespace PatcherWPF
             detailBar.Value = tempdetail;
             int.TryParse(NEUZ_TEXTURE, out int temptexture);
             textBar.Value = temptexture;
+            int.TryParse(NEUZ_NVD, out int tempnvd);
+            textBar.Value = tempnvd;
 
             //PATCH
             //We delete patchlog file
@@ -413,30 +424,21 @@ namespace PatcherWPF
                 string[] temp = NEUZ_N_RESOLUTION.Split('x');
                 neuz[3] = "resolution " + temp[0] + " " + temp[1];
             }
-            if (NEUZ_N_FULLSCREEN)
-            {
-                neuz[4] = "fullscreen 1";
-            }
-            else
-            {
-                neuz[4] = "fullscreen 0";
-            }
-            if (NEUZ_N_SIGHT != "")
-            {
-                neuz[6] = "view " + NEUZ_N_SIGHT;
-            }
-            if (NEUZ_N_TEXTURE != "")
-            {
-                neuz[5] = "texture " + NEUZ_N_TEXTURE;
-            }
-            if (NEUZ_N_SHADOW != "")
-            {
-                neuz[9] = "shadow " + NEUZ_N_SHADOW;
-            }
-            if (NEUZ_N_DETAILS != "")
-            {
-                neuz[7] = "detail " + NEUZ_N_DETAILS;
-            }
+            if (NEUZ_N_FULLSCREEN) neuz[4] = "fullscreen 1";
+            else neuz[4] = "fullscreen 0";
+            if (NEUZ_N_SIGHT != "")neuz[6] = "view " + NEUZ_N_SIGHT;
+            if (NEUZ_N_TEXTURE != "")neuz[5] = "texture " + NEUZ_N_TEXTURE;
+            if (NEUZ_N_SHADOW != "") neuz[9] = "shadow " + NEUZ_N_SHADOW;
+            if (NEUZ_N_DETAILS != "") neuz[7] = "detail " + NEUZ_N_DETAILS;
+            if (NEUZ_N_ANTIALIASING) neuz[10] = "ANTIALIASING 0";
+            else neuz[10] = "ANTIALIASING 1";
+            if (NEUZ_N_ANISOTROPIC) neuz[11] = "ANISOTROPIC 0";
+            else neuz[11] = "ANISOTROPIC 1";
+            if (NEUZ_N_MIPMAP) neuz[12] = "MIPMAP 0";
+            else neuz[12] = "MIPMAP 1";
+            if (NEUZ_N_NVD != "") neuz[13] = "NameViewDistance " + NEUZ_N_NVD;
+
+
             File.WriteAllLines("./neuz.ini", neuz);
         }
 
@@ -494,6 +496,13 @@ namespace PatcherWPF
         {
             int val = (int)shadowBar.Value;
             NEUZ_N_SHADOW = val.ToString();
+        }
+
+        private void displayName_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            int val = (int)displayName.Value;
+            NEUZ_N_NVD = val.ToString();
+
         }
     }
 }
