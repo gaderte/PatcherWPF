@@ -59,7 +59,7 @@
         <Label x:Name="newsLabel" Content="News :" Canvas.Left="232" Canvas.Top="184" Height="161" Width="287" BorderThickness="0" BorderBrush="#00000000" FontStyle="Italic" Background="#FF101010" Foreground="Gold" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
         <Label x:Name="vitesseDLL" Content="0 o/s" Canvas.Left="336" Canvas.Top="407" Width="76" HorizontalContentAlignment="Center" Foreground="White"/>
         <Label x:Name="dllLeft" Content="0 Mo" Canvas.Left="32" Canvas.Top="438" Width="173" HorizontalContentAlignment="Center" Foreground="White"/>
-        <Canvas x:Name="CanvasOptions" Height="170" Canvas.Top="481" Width="750" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="Visible" OpacityMask="Black" Background="White" Opacity="0">
+        <Canvas x:Name="CanvasOptions" Height="170" Canvas.Top="480" Width="750" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="Visible" OpacityMask="Black" Background="White" Opacity="0">
             <Label Content="Résolution :" Canvas.Left="33" Canvas.Top="6" FontSize="11"/>
             <ComboBox x:Name="choixResolution" Canvas.Left="16" Canvas.Top="34" Width="99" Height="24" SelectionChanged="choixResolution_SelectionChanged">
                 <ComboBoxItem>800x600</ComboBoxItem>
