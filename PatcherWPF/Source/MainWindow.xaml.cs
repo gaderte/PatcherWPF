@@ -185,13 +185,15 @@ namespace PatcherWPF
                 {
                     //Check if directory is created
                     string[] dirs = i.Split('\\');
+                    string temp = "./";
                     foreach (string x in dirs)
                     {
                         if (!x.Contains('.'))
                         {
-                            DirectoryInfo di = Directory.CreateDirectory("./" + x);
+                            temp += x + '/';
                         }
                     }
+                    DirectoryInfo di = Directory.CreateDirectory("./" + temp);
                     DownloadFile(i);
                 }
             }
