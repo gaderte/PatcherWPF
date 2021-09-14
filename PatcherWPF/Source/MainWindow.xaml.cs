@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -47,21 +47,28 @@ namespace PatcherWPF
 
         public MainWindow()
         {
+            if (Process.GetProcessesByName("Neuz").Length > 0)
+            {
+                Process.Start("Neuz.exe", "62.210.104.245 sunkist");
+                Application.Current.Shutdown();
+            }
             InitializeComponent();
             startBtn.IsEnabled = false;
         }
 
+        //Main function
         private void window_Loaded(object sender, EventArgs e)
         {
             string path = "./neuz.ini";
-
+            //If the neuz.ini file doesn't exist
             if (!File.Exists(path))
             {
+                //Display a box saying that the file doesn't exist
                 MessageBox.Show("Le fichier Neuz.ini n'existe pas ! Verifiez que vous avez bien placé le launcher dans le dossier de jeu FlyFF !", "Fichier manquant !");
             }
-
+            //Read the neuz.ini file and store it into a table
             string[] neuz_ini = File.ReadAllLines(path);
-
+            //Doing some useless changes
             string[] temp_res = neuz_ini[3].Split(' ');
             string[] temp_fullscreen = neuz_ini[4].Split(' ');
             string[] temp_shadow = neuz_ini[9].Split(' ');
@@ -114,8 +121,10 @@ namespace PatcherWPF
             textBar.Value = temptexture;
 
             //PATCH
+            //We delete patchlog file
             File.Delete(@"./patchlog.txt");
             WriteLog("Connexion au serveur...\n");
+            //System.Threading.Thread.Sleep(15000);
             bool isOk = false;
             while (!isOk)
             {
@@ -169,10 +178,20 @@ namespace PatcherWPF
             }
             else
             {
+                
                 filesLeft.Content = "0 / " + NBR_FILE_TO_DLL;
                 //Télécharger les nouveaux fichiers
                 foreach (string i in FILE_TO_DOWNLOAD)
                 {
+                    //Check if directory is created
+                    string[] dirs = i.Split('\\');
+                    foreach (string x in dirs)
+                    {
+                        if (!x.Contains('.'))
+                        {
+                            DirectoryInfo di = Directory.CreateDirectory("./" + x);
+                        }
+                    }
                     DownloadFile(i);
                 }
             }
@@ -294,7 +313,7 @@ namespace PatcherWPF
                 {
                     var bytesPerSecond = e.BytesReceived / (long)timeSpan.TotalSeconds;
                     vitesseDLL.Content = (bytesPerSecond / 1024d / 1024d).ToString("0.00") + " Mo/s";
-                } catch(System.DivideByZeroException x)
+                } catch(System.DivideByZeroException)
                 {
                     vitesseDLL.Content = "0.00 Mo/s";
                 }
@@ -316,6 +335,7 @@ namespace PatcherWPF
             {
                 startBtn.IsEnabled = true;
             }
+
             Source.Gzip.Decompress(new FileInfo("./" + filename + ".gz"));
             File.Delete("./" + filename + ".gz");
             int size = FILE_TO_DOWNLOAD.Count();
