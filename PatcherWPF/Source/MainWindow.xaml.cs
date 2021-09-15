@@ -31,27 +31,19 @@ namespace PatcherWPF
         private static bool isShowed = false;
         bool _shown;
 
-        private static string NEUZ_RESOLUTION;
-        private static bool NEUZ_FULLSCREEN;
-        private static string NEUZ_SHADOW;
-        private static string NEUZ_SIGHT;
-        private static string NEUZ_TEXTURE;
-        private static string NEUZ_DETAILS;
-        private static bool NEUZ_ANTIALIASING;
-        private static bool NEUZ_ANISOTROPIC;
-        private static bool NEUZ_MIPMAP;
-        private static string NEUZ_NVD;
+        Dictionary<string, int> options = new Dictionary<string, int>();
+        string[] listeOptions;
 
-        private static string NEUZ_N_RESOLUTION = "";
-        private static bool NEUZ_N_FULLSCREEN = NEUZ_FULLSCREEN;
-        private static string NEUZ_N_SHADOW = "";
-        private static string NEUZ_N_SIGHT = "";
-        private static string NEUZ_N_TEXTURE = "";
-        private static string NEUZ_N_DETAILS = "";
-        private static bool NEUZ_N_ANTIALIASING = NEUZ_ANTIALIASING;
-        private static bool NEUZ_N_ANISOTROPIC = NEUZ_ANISOTROPIC;
-        private static bool NEUZ_N_MIPMAP = NEUZ_MIPMAP;
-        private static string NEUZ_N_NVD = "";
+        private static string NEUZ_RESOLUTION = "";
+        private static bool NEUZ_FULLSCREEN = false;
+        private static string NEUZ_SHADOW = "";
+        private static string NEUZ_SIGHT = "";
+        private static string NEUZ_TEXTURE = "";
+        private static string NEUZ_DETAILS = "";
+        private static bool NEUZ_ANTIALIASING = false;
+        private static bool NEUZ_ANISOTROPIC = false;
+        private static bool NEUZ_MIPMAP = false;
+        private static string NEUZ_NVD = "";
 
         public MainWindow()
         {
@@ -73,31 +65,12 @@ namespace PatcherWPF
             {
                 //Display a box saying that the file doesn't exist
                 MessageBox.Show("Le fichier Neuz.ini n'existe pas ! Verifiez que vous avez bien placé le launcher dans le dossier de jeu FlyFF !", "Fichier manquant !");
+                Application.Current.Shutdown();
             }
-            //Read the neuz.ini file and store it into a table
-            string[] neuz_ini = File.ReadAllLines(path);
-            //Doing some useless changes
-            string[] temp_res = neuz_ini[3].Split(' ');
-            string[] temp_fullscreen = neuz_ini[4].Split(' ');
-            string[] temp_shadow = neuz_ini[9].Split(' ');
-            string[] temp_sight = neuz_ini[6].Split(' ');
-            string[] temp_texture = neuz_ini[5].Split(' ');
-            string[] temp_detail = neuz_ini[7].Split(' ');
-            string[] temp_antialiasing = neuz_ini[10].Split(' ');
-            string[] temp_anisotropic = neuz_ini[11].Split(' ');
-            string[] temp_mipmap = neuz_ini[12].Split(' ');
-            string[] temp_nvd = neuz_ini[13].Split(' ');
-
-            NEUZ_FULLSCREEN = temp_fullscreen[1] == "0" ? false : true;
-            NEUZ_RESOLUTION = temp_res[1] + "x" + temp_res[2];
-            NEUZ_SHADOW = temp_shadow[1];
-            NEUZ_SIGHT = temp_sight[1];
-            NEUZ_TEXTURE = temp_texture[1];
-            NEUZ_DETAILS = temp_detail[1];
-            NEUZ_ANTIALIASING = temp_antialiasing[1] == "0" ? false : true;
-            NEUZ_ANISOTROPIC = temp_anisotropic[1] == "0" ? false : true;
-            NEUZ_MIPMAP = temp_mipmap[1] == "0" ? false : true;
-            NEUZ_NVD = temp_nvd[1];
+            listeOptions = new string[] { "resolution", "fullscreen", "texture", "view", "detail", "shadow",
+                "ANTIALIASING", "ANISOTROPIC", "MIPMAP", "NameViewDistance"};
+            loadOptions(path);
+            
         }
 
         private void quitOnClick(object sender, RoutedEventArgs e)
@@ -111,25 +84,6 @@ namespace PatcherWPF
             base.OnContentRendered(e);
             if (_shown) return;
             _shown = true;
-
-            //Chargement options
-            var comboBoxItem = choixResolution.Items.OfType<ComboBoxItem>().FirstOrDefault(x => x.Content.ToString() == NEUZ_RESOLUTION);
-            int choix = choixResolution.SelectedIndex = choixResolution.Items.IndexOf(comboBoxItem);
-            choixResolution.SelectedIndex = choix;
-            if (NEUZ_FULLSCREEN) fullscreen.IsChecked = true;
-            if (NEUZ_ANTIALIASING) Antialiasing.IsChecked = true;
-            if (NEUZ_ANISOTROPIC) Anisotropique.IsChecked = true;
-            if (NEUZ_MIPMAP) mipMapping.IsChecked = true;
-            int.TryParse(NEUZ_SIGHT, out int tempsight);
-            sightBar.Value = tempsight;
-            int.TryParse(NEUZ_SHADOW, out int tempshadow);
-            shadowBar.Value = tempshadow;
-            int.TryParse(NEUZ_DETAILS, out int tempdetail);
-            detailBar.Value = tempdetail;
-            int.TryParse(NEUZ_TEXTURE, out int temptexture);
-            textBar.Value = temptexture;
-            int.TryParse(NEUZ_NVD, out int tempnvd);
-            textBar.Value = tempnvd;
 
             //PATCH
             //We delete patchlog file
@@ -280,6 +234,74 @@ namespace PatcherWPF
             }
         }
 
+        private void loadOptions(string path)
+        {
+            //Read the neuz.ini file and store it into a table
+            string[] neuz_ini = File.ReadAllLines(path);
+            for (int i = 0; i < listeOptions.Length; i++)
+            {
+                if (Array.FindIndex(neuz_ini, s => s.StartsWith(listeOptions[i])) == -1) {
+                    if (listeOptions[i] == "resolution")
+                    {
+                        File.AppendAllText(path, listeOptions[i] + " 800 600\n");
+                        neuz_ini = File.ReadAllLines(path);
+                    } else
+                    {
+                        File.AppendAllText(path, listeOptions[i] + " 0\n");
+                        neuz_ini = File.ReadAllLines(path);
+                    }
+                }
+                options.Add(listeOptions[i], Array.FindIndex(neuz_ini, s => s.StartsWith(listeOptions[i])));
+            }
+
+            //Doing some useless changes
+            string[] temp_res = neuz_ini[options["resolution"]].Split(' ');
+            string[] temp_fullscreen = neuz_ini[options["fullscreen"]].Split(' ');
+            string[] temp_texture = neuz_ini[options["texture"]].Split(' ');
+            string[] temp_view = neuz_ini[options["view"]].Split(' ');
+            string[] temp_detail = neuz_ini[options["detail"]].Split(' ');
+            string[] temp_shadow = neuz_ini[options["shadow"]].Split(' ');
+            string[] temp_antialiasing = neuz_ini[options["ANTIALIASING"]].Split(' ');
+            string[] temp_anisotropic = neuz_ini[options["ANISOTROPIC"]].Split(' ');
+            string[] temp_mipmap = neuz_ini[options["MIPMAP"]].Split(' ');
+            string[] temp_nvd = neuz_ini[options["NameViewDistance"]].Split(' ');
+            
+            NEUZ_FULLSCREEN = temp_fullscreen[1] == "0" ? false : true;
+            NEUZ_RESOLUTION = temp_res[1] + "x" + temp_res[2];
+            NEUZ_SHADOW = temp_shadow[1];
+            NEUZ_SIGHT = temp_view[1];
+            NEUZ_TEXTURE = temp_texture[1];
+            NEUZ_DETAILS = temp_detail[1];
+            NEUZ_ANTIALIASING = temp_antialiasing[1] == "0" ? false : true;
+            NEUZ_ANISOTROPIC = temp_anisotropic[1] == "0" ? false : true;
+            NEUZ_MIPMAP = temp_mipmap[1] == "0" ? false : true;
+            NEUZ_NVD = temp_nvd[1];
+
+            optionsDisplay();
+        }
+
+        private void optionsDisplay()
+        {
+            //Chargement options
+            var comboBoxItem = choixResolution.Items.OfType<ComboBoxItem>().FirstOrDefault(x => x.Content.ToString() == NEUZ_RESOLUTION);
+            int choix = choixResolution.SelectedIndex = choixResolution.Items.IndexOf(comboBoxItem);
+            choixResolution.SelectedIndex = choix;
+            if (NEUZ_FULLSCREEN) fullscreen.IsChecked = true;
+            if (NEUZ_ANTIALIASING) Antialiasing.IsChecked = true;
+            if (NEUZ_ANISOTROPIC) Anisotropique.IsChecked = true;
+            if (NEUZ_MIPMAP) mipMapping.IsChecked = true;
+            int.TryParse(NEUZ_SIGHT, out int tempsight);
+            sightBar.Value = tempsight;
+            int.TryParse(NEUZ_SHADOW, out int tempshadow);
+            shadowBar.Value = tempshadow;
+            int.TryParse(NEUZ_DETAILS, out int tempdetail);
+            detailBar.Value = tempdetail;
+            int.TryParse(NEUZ_TEXTURE, out int temptexture);
+            textBar.Value = temptexture;
+            int.TryParse(NEUZ_NVD, out int tempnvd);
+            displayName.Value = tempnvd;
+        }
+
         private void WriteLog(string log)
         {
             File.AppendAllText(@"./patchlog.txt", log);
@@ -417,27 +439,24 @@ namespace PatcherWPF
             {
                 MessageBox.Show("Le fichier Neuz.ini n'existe pas ! Verifiez que vous avez bien placé le launcher dans le dossier de jeu FlyFF !", "Fichier manquant !");
             }
-
             string[] neuz = File.ReadAllLines(path);
-            if (NEUZ_N_RESOLUTION != "")
-            {
-                string[] temp = NEUZ_N_RESOLUTION.Split('x');
-                neuz[3] = "resolution " + temp[0] + " " + temp[1];
-            }
-            if (NEUZ_N_FULLSCREEN) neuz[4] = "fullscreen 1";
-            else neuz[4] = "fullscreen 0";
-            if (NEUZ_N_SIGHT != "")neuz[6] = "view " + NEUZ_N_SIGHT;
-            if (NEUZ_N_TEXTURE != "")neuz[5] = "texture " + NEUZ_N_TEXTURE;
-            if (NEUZ_N_SHADOW != "") neuz[9] = "shadow " + NEUZ_N_SHADOW;
-            if (NEUZ_N_DETAILS != "") neuz[7] = "detail " + NEUZ_N_DETAILS;
-            if (NEUZ_N_ANTIALIASING) neuz[10] = "ANTIALIASING 0";
-            else neuz[10] = "ANTIALIASING 1";
-            if (NEUZ_N_ANISOTROPIC) neuz[11] = "ANISOTROPIC 0";
-            else neuz[11] = "ANISOTROPIC 1";
-            if (NEUZ_N_MIPMAP) neuz[12] = "MIPMAP 0";
-            else neuz[12] = "MIPMAP 1";
-            if (NEUZ_N_NVD != "") neuz[13] = "NameViewDistance " + NEUZ_N_NVD;
 
+            string[] temp = NEUZ_RESOLUTION.Split('x');
+            neuz[options["resolution"]] = "resolution " + temp[0] + " " + temp[1];
+            neuz[options["view"]] = "view " + NEUZ_SIGHT;
+            neuz[options["texture"]] = "texture " + NEUZ_TEXTURE;
+            neuz[options["shadow"]] = "shadow " + NEUZ_SHADOW;
+            neuz[options["detail"]] = "detail " + NEUZ_DETAILS;
+            neuz[options["NameViewDistance"]] = "NameViewDistance " + NEUZ_NVD;
+
+            if (NEUZ_FULLSCREEN) neuz[options["fullscreen"]] = "fullscreen 1";
+            else neuz[options["fullscreen"]] = "fullscreen 0";
+            if (NEUZ_ANTIALIASING) neuz[options["ANTIALIASING"]] = "ANTIALIASING 0";
+            else neuz[options["ANTIALIASING"]] = "ANTIALIASING 1";
+            if (NEUZ_ANISOTROPIC) neuz[options["ANISOTROPIC"]] = "ANISOTROPIC 0";
+            else neuz[options["ANISOTROPIC"]] = "ANISOTROPIC 1";
+            if (NEUZ_MIPMAP) neuz[options["MIPMAP"]] = "MIPMAP 0";
+            else neuz[options["MIPMAP"]] = "MIPMAP 1";
 
             File.WriteAllLines("./neuz.ini", neuz);
         }
@@ -466,43 +485,42 @@ namespace PatcherWPF
         private void choixResolution_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBoxItem typeItem = (ComboBoxItem)choixResolution.SelectedItem;
-            NEUZ_N_RESOLUTION = typeItem.Content.ToString();
+            NEUZ_RESOLUTION = typeItem.Content.ToString();
         }
 
         private void fullscreen_Checked(object sender, RoutedEventArgs e)
         {
-            NEUZ_N_FULLSCREEN = (bool)fullscreen.IsChecked;
+            NEUZ_FULLSCREEN = (bool)fullscreen.IsChecked;
         }
 
         private void sightBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int val = (int)sightBar.Value;
-            NEUZ_N_SIGHT = val.ToString();
+            NEUZ_SIGHT = val.ToString();
         }
 
         private void textBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int val = (int)textBar.Value;
-            NEUZ_N_TEXTURE = val.ToString();
+            NEUZ_TEXTURE = val.ToString();
         }
 
         private void detailBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int val = (int)detailBar.Value;
-            NEUZ_N_DETAILS = val.ToString();
+            NEUZ_DETAILS = val.ToString();
         }
 
         private void shadowBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int val = (int)shadowBar.Value;
-            NEUZ_N_SHADOW = val.ToString();
+            NEUZ_SHADOW = val.ToString();
         }
 
         private void displayName_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int val = (int)displayName.Value;
-            NEUZ_N_NVD = val.ToString();
-
+            NEUZ_NVD = val.ToString();
         }
     }
 }
