@@ -243,11 +243,11 @@ namespace PatcherWPF
                 if (Array.FindIndex(neuz_ini, s => s.StartsWith(listeOptions[i])) == -1) {
                     if (listeOptions[i] == "resolution")
                     {
-                        File.AppendAllText(path, listeOptions[i] + " 800 600\n");
+                        File.AppendAllText(path, "\n" + listeOptions[i] + " 800 600");
                         neuz_ini = File.ReadAllLines(path);
                     } else
                     {
-                        File.AppendAllText(path, listeOptions[i] + " 0\n");
+                        File.AppendAllText(path, "\n" + listeOptions[i] + " 0");
                         neuz_ini = File.ReadAllLines(path);
                     }
                 }
