@@ -95,9 +95,9 @@ namespace PatcherWPF
             NEUZ_SIGHT = temp_view[1];
             NEUZ_TEXTURE = temp_texture[1];
             NEUZ_DETAILS = temp_detail[1];
-            NEUZ_ANTIALIASING = temp_antialiasing[1] == "0" ? false : true;
-            NEUZ_ANISOTROPIC = temp_anisotropic[1] == "0" ? false : true;
-            NEUZ_MIPMAP = temp_mipmap[1] == "0" ? false : true;
+            NEUZ_ANTIALIASING = temp_antialiasing[1] != "0";
+            NEUZ_ANISOTROPIC = temp_anisotropic[1] != "0";
+            NEUZ_MIPMAP = temp_mipmap[1] != "0";
             NEUZ_NVD = nameDistance[nameDistance.FirstOrDefault(x => x.Value == temp_nvd[1]).Key].ToString();
 
             optionsDisplay();
@@ -145,12 +145,12 @@ namespace PatcherWPF
 
             if (NEUZ_FULLSCREEN) neuz[options["fullscreen"]] = "fullscreen 1";
             else neuz[options["fullscreen"]] = "fullscreen 0";
-            if (NEUZ_ANTIALIASING) neuz[options["ANTIALIASING"]] = "ANTIALIASING 0";
-            else neuz[options["ANTIALIASING"]] = "ANTIALIASING 1";
-            if (NEUZ_ANISOTROPIC) neuz[options["ANISOTROPIC"]] = "ANISOTROPIC 0";
-            else neuz[options["ANISOTROPIC"]] = "ANISOTROPIC 1";
-            if (NEUZ_MIPMAP) neuz[options["MIPMAP"]] = "MIPMAP 0";
-            else neuz[options["MIPMAP"]] = "MIPMAP 1";
+            if (NEUZ_ANTIALIASING) neuz[options["ANTIALIASING"]] = "ANTIALIASING 1";
+            else neuz[options["ANTIALIASING"]] = "ANTIALIASING 0";
+            if (NEUZ_ANISOTROPIC) neuz[options["ANISOTROPIC"]] = "ANISOTROPIC 1";
+            else neuz[options["ANISOTROPIC"]] = "ANISOTROPIC 0";
+            if (NEUZ_MIPMAP) neuz[options["MIPMAP"]] = "MIPMAP 1";
+            else neuz[options["MIPMAP"]] = "MIPMAP 0";
 
             File.WriteAllLines("./neuz.ini", neuz);
         }
@@ -207,6 +207,20 @@ namespace PatcherWPF
         {
             int val = (int)displayName.Value;
             NEUZ_NVD = nameDistance[val.ToString()].ToString();
+        }
+
+        private void Antialiasing_Checked(object sender, RoutedEventArgs e)
+        {
+            NEUZ_ANTIALIASING = (bool)Antialiasing.IsChecked;
+        }
+
+        private void Anisotropique_Checked(object sender, RoutedEventArgs e)
+        {
+            NEUZ_ANISOTROPIC = (bool)Anisotropique.IsChecked;
+        }
+        private void mipMapping_Checked(object sender, RoutedEventArgs e)
+        {
+            NEUZ_MIPMAP = (bool)mipMapping.IsChecked;
         }
     }
 }
