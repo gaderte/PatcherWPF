@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PatcherWPF"
-        mc:Ignorable="d" Height="650" Width="750" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
+        mc:Ignorable="d" Height="481" Width="750" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
         MouseDown="Window_MouseDown" Loaded="window_Loaded"
         AllowsTransparency="True" Icon="sylia_logo.png" Margin="0" Background="#00000000" BorderBrush="Black" BorderThickness="0">
     <Window.Resources>
@@ -33,7 +33,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Canvas x:Name="CanvasPrincipal" HorizontalAlignment="Left" Width="750" RenderTransformOrigin="0.495,0.517" Margin="0,0,0,170" Height="480">
+    <Canvas x:Name="CanvasPrincipal" HorizontalAlignment="Left" Width="750" RenderTransformOrigin="0.495,0.517" Margin="0" Height="480" VerticalAlignment="Top">
         <Canvas.Background>
             <ImageBrush ImageSource="fond.jpg" TileMode="Tile"/>
         </Canvas.Background>
@@ -51,7 +51,7 @@
         <Button x:Name="discordBtn" Content="Discord" Canvas.Left="612" Canvas.Top="240" Width="128" Click="discordBtn_Click" Cursor="Hand"/>
         <Button x:Name="siteWebBtn" Content="Site Web" Canvas.Left="612" Canvas.Top="265" Width="128" Click="siteWebBtn_Click" Cursor="Hand"/>
         <Button x:Name="inscriptionBtn" Content="Inscription" Canvas.Left="612" Canvas.Top="290" Width="128" Click="siteWebBtn_Click" IsEnabled="False"/>
-        <Button x:Name="testBtn" Style="{StaticResource MyButtonStyle}" Content="" Canvas.Left="32" Canvas.Top="20" Width="135" Height="135" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" PreviewMouseLeftButtonDown="test_Pressed" PreviewMouseLeftButtonUp="test_Release" Click="test_Click" Cursor="Hand" Visibility="Hidden">
+        <Button x:Name="testBtn" Style="{StaticResource MyButtonStyle}" Content="" Canvas.Left="32" Canvas.Top="20" Width="135" Height="135" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" Click="test_Click" Cursor="Hand" Visibility="Hidden">
             <Button.Background>
                 <ImageBrush ImageSource="sylia_logo.png"/>
             </Button.Background>
@@ -59,51 +59,5 @@
         <Label x:Name="newsLabel" Content="News :" Canvas.Left="232" Canvas.Top="184" Height="161" Width="287" BorderThickness="0" BorderBrush="#00000000" FontStyle="Italic" Background="#FF101010" Foreground="Gold" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
         <Label x:Name="vitesseDLL" Content="0 o/s" Canvas.Left="336" Canvas.Top="407" Width="76" HorizontalContentAlignment="Center" Foreground="White"/>
         <Label x:Name="dllLeft" Content="0 Mo" Canvas.Left="32" Canvas.Top="438" Width="173" HorizontalContentAlignment="Center" Foreground="White"/>
-        <Canvas x:Name="CanvasOptions" Height="170" Canvas.Top="480" Width="750" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="Visible" OpacityMask="Black" Background="White" Opacity="0">
-            <Label Content="Résolution :" Canvas.Left="33" Canvas.Top="6" FontSize="11"/>
-            <ComboBox x:Name="choixResolution" Canvas.Left="16" Canvas.Top="34" Width="99" Height="24" SelectionChanged="choixResolution_SelectionChanged">
-                <ComboBoxItem>800x600</ComboBoxItem>
-                <ComboBoxItem>1024x728</ComboBoxItem>
-                <ComboBoxItem>1280x720</ComboBoxItem>
-                <ComboBoxItem>1260x768</ComboBoxItem>
-                <ComboBoxItem>1280x800</ComboBoxItem>
-                <ComboBoxItem>1280x1024</ComboBoxItem>
-                <ComboBoxItem>1360x768</ComboBoxItem>
-                <ComboBoxItem>1400x1050</ComboBoxItem>
-                <ComboBoxItem>1440x900</ComboBoxItem>
-                <ComboBoxItem>1680x1050</ComboBoxItem>
-                <ComboBoxItem>1920x1080</ComboBoxItem>
-            </ComboBox>
-            <CheckBox x:Name="fullscreen" Content="FullScreen" Canvas.Left="26" Canvas.Top="65" FontSize="11" Height="15" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311"/>
-            <Slider x:Name="sightBar" Canvas.Left="152" Canvas.Top="34" Width="105" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="sightBar_ValueChanged" IsSnapToTickEnabled="True"/>
-            <Slider x:Name="textBar" Canvas.Left="310" Canvas.Top="34" Width="105" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="textBar_ValueChanged" IsSnapToTickEnabled="True"/>
-            <Slider x:Name="detailBar" Canvas.Left="465" Canvas.Top="34" Width="105" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="detailBar_ValueChanged" IsSnapToTickEnabled="True"/>
-            <Slider x:Name="shadowBar" Canvas.Left="616" Canvas.Top="34" Width="105" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="shadowBar_ValueChanged" IsSnapToTickEnabled="True"/>
-            <Label Content="Distance" Canvas.Left="179" Canvas.Top="6" FontSize="11"/>
-            <Label Content="Texture" Canvas.Left="340" Canvas.Top="6" FontSize="11"/>
-            <Label Content="Objets" Canvas.Left="497" Canvas.Top="6" FontSize="11"/>
-            <Label x:Name="labelShadow" Content="Ombres" Canvas.Left="645" Canvas.Top="6" FontSize="11"/>
-            <Label Content="Loin" Canvas.Left="143" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Moy." Canvas.Left="190" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Proche" Canvas.Left="232" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Détaillées" Canvas.Left="289" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Moy." Canvas.Left="348" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Faibles" Canvas.Left="390" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Moy." Canvas.Left="503" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Faibles" Canvas.Left="545" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Moy." Canvas.Left="654" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Faibles" Canvas.Left="696" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Détaillées" Canvas.Left="444" Canvas.Top="61" FontSize="10"/>
-            <Label Content="Détaillées" Canvas.Left="596" Canvas.Top="61" FontSize="10"/>
-            <CheckBox x:Name="mipMapping" Content="Mip Mapping" Canvas.Left="26" Canvas.Top="124" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311"/>
-            <CheckBox x:Name="Antialiasing" Content="Antialiasing" Canvas.Left="173" Canvas.Top="124" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311"/>
-            <CheckBox x:Name="Anisotropique" Content="Anisotropique" Canvas.Left="340" Canvas.Top="124" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311"/>
-            <Slider x:Name="displayName" Canvas.Left="502" Canvas.Top="113" Width="184" Maximum="3" SmallChange="1" TickPlacement="Both" ValueChanged="displayName_ValueChanged" IsSnapToTickEnabled="True" Value="0"/>
-            <Label Content="Distance affichage des noms" Canvas.Left="520" Canvas.Top="89" FontSize="11"/>
-            <Label Content="Court" Canvas.Left="548" Canvas.Top="143" FontSize="10"/>
-            <Label Content="Moyen" Canvas.Left="602" Canvas.Top="143" FontSize="10"/>
-            <Label Content="Très court" Canvas.Left="481" Canvas.Top="143" FontSize="10"/>
-            <Label Content="Loin" Canvas.Left="666" Canvas.Top="143" FontSize="10"/>
-        </Canvas>
     </Canvas>
 </Window>

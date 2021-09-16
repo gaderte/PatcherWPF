@@ -1,0 +1,58 @@
+﻿<Window x:Name="OptionWin" x:Class="PatcherWPF.OptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PatcherWPF"
+        MouseDown="Window_MouseDown"
+        mc:Ignorable="d" Height="350" Width="350
+        " ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Grid x:Name="OptionGrid">
+        <ComboBox x:Name="choixResolution" SelectionChanged="choixResolution_SelectionChanged" Margin="127,35,122,293">
+            <ComboBoxItem Content="800x600"/>
+            <ComboBoxItem Content="1024x728"/>
+            <ComboBoxItem Content="1280x720"/>
+            <ComboBoxItem Content="1260x768"/>
+            <ComboBoxItem Content="1280x800"/>
+            <ComboBoxItem Content="1280x1024"/>
+            <ComboBoxItem Content="1360x768"/>
+            <ComboBoxItem Content="1400x1050"/>
+            <ComboBoxItem Content="1440x900"/>
+            <ComboBoxItem Content="1680x1050"/>
+            <ComboBoxItem Content="1920x1080"/>
+        </ComboBox>
+        <CheckBox x:Name="fullscreen" Content="FullScreen" FontSize="11" Height="15" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311" Margin="141,62,131,273"/>
+        <Slider x:Name="displayName" Maximum="3" SmallChange="1" TickPlacement="Both" ValueChanged="displayName_ValueChanged" IsSnapToTickEnabled="True" Value="0" Margin="26,291,140,29"/>
+        <Label Content="Distance affichage des noms" FontSize="11" Margin="16,266,186,59"/>
+        <Label Content="Court" FontSize="10" Margin="73,321,242,6"/>
+        <Label Content="Moyen" FontSize="10" Margin="127,321,182,6"/>
+        <Label Content="Très court" FontSize="10" Margin="5,321,292,6"/>
+        <Label Content="Loin" FontSize="10" Margin="190,321,131,6"/>
+        <CheckBox x:Name="mipMapping" Content="Mip Mapping" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311" Margin="241,285,10,50"/>
+        <CheckBox x:Name="Antialiasing" Content="Antialiasing" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311" Margin="241,305,10,30"/>
+        <CheckBox x:Name="Anisotropique" Content="Anisotropique" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="fullscreen_Checked" RenderTransformOrigin="0.511,1.311" Margin="241,325,10,10"/>
+        <Label Content="Résolution :" FontSize="11" Margin="144,10,140,315"/>
+        <Slider x:Name="sightBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="sightBar_ValueChanged" IsSnapToTickEnabled="True" Margin="24,108,221,212" IsDirectionReversed="True" Value="2"/>
+        <Label Content="Distance" FontSize="11" Margin="48,83,251,242"/>
+        <Label Content="Loin" FontSize="10" Margin="109,138,212,189"/>
+        <Label Content="Moy." FontSize="10" Margin="61,138,257,189"/>
+        <Label Content="Proche" FontSize="10" Margin="13,138,297,189"/>
+        <Slider x:Name="textBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="textBar_ValueChanged" IsSnapToTickEnabled="True" Margin="216,111,29,209" IsDirectionReversed="True" Value="2"/>
+        <Label Content="Textures" FontSize="11" Margin="246,83,53,242"/>
+        <Label Content="Détaillées" FontSize="10" Margin="289,138,8,189"/>
+        <Label Content="Moy." FontSize="10" Margin="252,138,66,189"/>
+        <Label Content="Faibles" FontSize="10" Margin="202,138,108,189"/>
+        <Slider x:Name="detailBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="sightBar_ValueChanged" IsSnapToTickEnabled="True" Margin="24,196,221,124" IsDirectionReversed="True" Value="2"/>
+        <Label Content="Objets" FontSize="11" Margin="54,171,251,154"/>
+        <Label Content="Loin" FontSize="10" Margin="109,226,212,101"/>
+        <Label Content="Moy." FontSize="10" Margin="61,226,257,101"/>
+        <Label Content="Proche" FontSize="10" Margin="13,226,297,101"/>
+        <Slider x:Name="shadowBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="sightBar_ValueChanged" IsSnapToTickEnabled="True" Margin="216,196,29,124" IsDirectionReversed="True" Value="2"/>
+        <Label Content="Ombres" FontSize="11" Margin="246,171,53,154"/>
+        <Label Content="Loin" FontSize="10" Margin="301,226,20,101"/>
+        <Label Content="Moy." FontSize="10" Margin="253,226,65,101"/>
+        <Label Content="Proche" FontSize="10" Margin="205,226,105,101"/>
+        <Button x:Name="quitButton" Content="X" Click="quitOnClick" Margin="320,10,10,320"/>
+
+    </Grid>
+</Window>
