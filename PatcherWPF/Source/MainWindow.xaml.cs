@@ -254,6 +254,9 @@ namespace PatcherWPF
                     {
                         File.AppendAllText(path, "\n" + listeOptions[i] + " 800 600");
                         neuz_ini = File.ReadAllLines(path);
+                    } else if (listeOptions[i] == "NameViewDistance") {
+                        File.AppendAllText(path, "\n" + listeOptions[i] + " 130");
+                        neuz_ini = File.ReadAllLines(path);
                     } else
                     {
                         File.AppendAllText(path, "\n" + listeOptions[i] + " 0");
