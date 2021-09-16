@@ -32,6 +32,7 @@ namespace PatcherWPF
         bool _shown;
 
         Dictionary<string, int> options = new Dictionary<string, int>();
+        Dictionary<string, float> nameDistance;
         string[] listeOptions;
 
         private static string NEUZ_RESOLUTION = "";
@@ -69,7 +70,16 @@ namespace PatcherWPF
             }
             listeOptions = new string[] { "resolution", "fullscreen", "texture", "view", "detail", "shadow",
                 "ANTIALIASING", "ANISOTROPIC", "MIPMAP", "NameViewDistance"};
+            nameDistance = new Dictionary<string, float>()
+            {
+                { "0", 40 },
+                { "1", 60 },
+                { "2", 80 },
+                { "3", 130 },
+            };
+            WriteLog("Chargement des options...\n");
             loadOptions(path);
+            WriteLog("Options correctement chargées\n");
             
         }
 
@@ -89,7 +99,6 @@ namespace PatcherWPF
             //We delete patchlog file
             File.Delete(@"./patchlog.txt");
             WriteLog("Connexion au serveur...\n");
-            //System.Threading.Thread.Sleep(15000);
             bool isOk = false;
             while (!isOk)
             {
@@ -114,9 +123,9 @@ namespace PatcherWPF
             {
                 Application.Current.Shutdown();
             }
-            //this.Controls.Add(siteWeb);
             WriteLog("Connecté au serveur !\n");
             //Téléchagement et décompression de la liste
+            WriteLog("Récupération de la liste...\n");
             DownloadList();
             DownloadNews();
             string pat = "./list.txt.gz";
@@ -143,7 +152,7 @@ namespace PatcherWPF
             }
             else
             {
-                
+                WriteLog("Téléchargement de " + FILE_TO_DOWNLOAD.Count + " fichiers\n");
                 filesLeft.Content = "0 / " + NBR_FILE_TO_DLL;
                 //Télécharger les nouveaux fichiers
                 foreach (string i in FILE_TO_DOWNLOAD)
@@ -275,7 +284,8 @@ namespace PatcherWPF
             NEUZ_ANTIALIASING = temp_antialiasing[1] == "0" ? false : true;
             NEUZ_ANISOTROPIC = temp_anisotropic[1] == "0" ? false : true;
             NEUZ_MIPMAP = temp_mipmap[1] == "0" ? false : true;
-            NEUZ_NVD = temp_nvd[1];
+            float.TryParse(temp_nvd[1], out float temp);
+            NEUZ_NVD = nameDistance[nameDistance.FirstOrDefault(x => x.Value == temp).Key].ToString();
 
             optionsDisplay();
         }
@@ -298,8 +308,9 @@ namespace PatcherWPF
             detailBar.Value = tempdetail;
             int.TryParse(NEUZ_TEXTURE, out int temptexture);
             textBar.Value = temptexture;
-            int.TryParse(NEUZ_NVD, out int tempnvd);
-            displayName.Value = tempnvd;
+            float.TryParse(NEUZ_NVD, out float tempnvd);
+            int.TryParse(nameDistance.FirstOrDefault(x => x.Value == tempnvd).Key, out int key);
+            displayName.Value = key;
         }
 
         private void WriteLog(string log)
@@ -370,7 +381,7 @@ namespace PatcherWPF
             {
                 startBtn.IsEnabled = true;
             }
-
+            WriteLog("Décompression du fichier " + filename + "...\n");
             Source.Gzip.Decompress(new FileInfo("./" + filename + ".gz"));
             File.Delete("./" + filename + ".gz");
             int size = FILE_TO_DOWNLOAD.Count();
@@ -520,7 +531,7 @@ namespace PatcherWPF
         private void displayName_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int val = (int)displayName.Value;
-            NEUZ_NVD = val.ToString();
+            NEUZ_NVD = nameDistance[val.ToString()].ToString();
         }
     }
 }
