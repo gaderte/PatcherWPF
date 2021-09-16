@@ -4,10 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PatcherWPF"
-        MouseDown="Window_MouseDown"
-        mc:Ignorable="d" Height="350" Width="350
-        " ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
-    <Grid x:Name="OptionGrid">
+        mc:Ignorable="d" Height="355" Width="355" ResizeMode="NoResize" WindowStartupLocation="Manual" WindowStyle="None" Topmost="True">
+    <Grid x:Name="OptionGrid" Background="#FFC1C1C1">
         <ComboBox x:Name="choixResolution" SelectionChanged="choixResolution_SelectionChanged" Margin="127,35,122,293">
             <ComboBoxItem Content="800x600"/>
             <ComboBoxItem Content="1024x728"/>
@@ -32,22 +30,22 @@
         <CheckBox x:Name="Antialiasing" Content="Antialiasing" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="Antialiasing_Checked" RenderTransformOrigin="0.511,1.311" Margin="241,305,10,30" Checked="Antialiasing_Checked"/>
         <CheckBox x:Name="Anisotropique" Content="Anisotropique" FontSize="11" Height="15" Width="99" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" Click="Anisotropique_Checked" RenderTransformOrigin="0.511,1.311" Margin="241,325,10,10" Checked="Anisotropique_Checked"/>
         <Label Content="Résolution :" FontSize="11" Margin="144,10,140,315"/>
-        <Slider x:Name="sightBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="sightBar_ValueChanged" IsSnapToTickEnabled="True" Margin="24,108,221,212" IsDirectionReversed="True" Value="2"/>
-        <Label Content="Distance" FontSize="11" Margin="48,83,251,242"/>
+        <Slider x:Name="distantBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="distantBar_ValueChanged" IsSnapToTickEnabled="True" Margin="24,108,221,212" IsDirectionReversed="True" Value="2"/>
+        <Label Content="Horizon" FontSize="11" Margin="52,83,247,242"/>
         <Label Content="Loin" FontSize="10" Margin="109,138,212,189"/>
         <Label Content="Moy." FontSize="10" Margin="61,138,257,189"/>
         <Label Content="Proche" FontSize="10" Margin="13,138,297,189"/>
-        <Slider x:Name="textBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="textBar_ValueChanged" IsSnapToTickEnabled="True" Margin="216,111,29,209" IsDirectionReversed="True" Value="2"/>
-        <Label Content="Textures" FontSize="11" Margin="246,83,53,242"/>
+        <Slider x:Name="viewBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="viewBar_ValueChanged" IsSnapToTickEnabled="True" Margin="216,111,29,209" IsDirectionReversed="True" Value="2"/>
+        <Label Content="Paysages" FontSize="11" Margin="242,83,54,242"/>
         <Label Content="Détaillées" FontSize="10" Margin="289,138,8,189"/>
         <Label Content="Moy." FontSize="10" Margin="252,138,66,189"/>
         <Label Content="Faibles" FontSize="10" Margin="202,138,108,189"/>
-        <Slider x:Name="detailBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="sightBar_ValueChanged" IsSnapToTickEnabled="True" Margin="24,196,221,124" IsDirectionReversed="True" Value="2"/>
+        <Slider x:Name="detailBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="detailBar_ValueChanged" IsSnapToTickEnabled="True" Margin="24,196,221,124" IsDirectionReversed="True" Value="2"/>
         <Label Content="Objets" FontSize="11" Margin="54,171,251,154"/>
         <Label Content="Loin" FontSize="10" Margin="109,226,212,101"/>
         <Label Content="Moy." FontSize="10" Margin="61,226,257,101"/>
         <Label Content="Proche" FontSize="10" Margin="13,226,297,101"/>
-        <Slider x:Name="shadowBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="sightBar_ValueChanged" IsSnapToTickEnabled="True" Margin="216,196,29,124" IsDirectionReversed="True" Value="2"/>
+        <Slider x:Name="shadowBar" Maximum="2" SmallChange="1" TickPlacement="Both" ValueChanged="shadowBar_ValueChanged" IsSnapToTickEnabled="True" Margin="216,196,29,124" IsDirectionReversed="True" Value="2"/>
         <Label Content="Ombres" FontSize="11" Margin="246,171,53,154"/>
         <Label Content="Loin" FontSize="10" Margin="301,226,20,101"/>
         <Label Content="Moy." FontSize="10" Margin="253,226,65,101"/>

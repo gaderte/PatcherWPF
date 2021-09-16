@@ -2,16 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PatcherWPF
 {
@@ -26,8 +19,8 @@ namespace PatcherWPF
         private static string NEUZ_RESOLUTION = "";
         private static bool NEUZ_FULLSCREEN = false;
         private static string NEUZ_SHADOW = "";
-        private static string NEUZ_SIGHT = "";
-        private static string NEUZ_TEXTURE = "";
+        private static string NEUZ_DISTANT = "";
+        private static string NEUZ_VIEW = "";
         private static string NEUZ_DETAILS = "";
         private static bool NEUZ_ANTIALIASING = false;
         private static bool NEUZ_ANISOTROPIC = false;
@@ -39,7 +32,7 @@ namespace PatcherWPF
             InitializeComponent();
             OptionWin.Hide();
             _isShown = false;
-            listeOptions = new string[] { "resolution", "fullscreen", "texture", "view", "detail", "shadow",
+            listeOptions = new string[] { "resolution", "fullscreen", "distant", "view", "detail", "shadow",
                 "ANTIALIASING", "ANISOTROPIC", "MIPMAP", "NameViewDistance"};
             nameDistance = new Dictionary<string, string>()
             {
@@ -80,8 +73,8 @@ namespace PatcherWPF
             //Doing some useless changes
             string[] temp_res = neuz_ini[options["resolution"]].Split(' ');
             string[] temp_fullscreen = neuz_ini[options["fullscreen"]].Split(' ');
-            string[] temp_texture = neuz_ini[options["texture"]].Split(' ');
             string[] temp_view = neuz_ini[options["view"]].Split(' ');
+            string[] temp_distant = neuz_ini[options["distant"]].Split(' ');
             string[] temp_detail = neuz_ini[options["detail"]].Split(' ');
             string[] temp_shadow = neuz_ini[options["shadow"]].Split(' ');
             string[] temp_antialiasing = neuz_ini[options["ANTIALIASING"]].Split(' ');
@@ -92,8 +85,8 @@ namespace PatcherWPF
             NEUZ_FULLSCREEN = temp_fullscreen[1] == "0" ? false : true;
             NEUZ_RESOLUTION = temp_res[1] + "x" + temp_res[2];
             NEUZ_SHADOW = temp_shadow[1];
-            NEUZ_SIGHT = temp_view[1];
-            NEUZ_TEXTURE = temp_texture[1];
+            NEUZ_DISTANT = temp_distant[1];
+            NEUZ_VIEW = temp_view[1];
             NEUZ_DETAILS = temp_detail[1];
             NEUZ_ANTIALIASING = temp_antialiasing[1] != "0";
             NEUZ_ANISOTROPIC = temp_anisotropic[1] != "0";
@@ -113,14 +106,14 @@ namespace PatcherWPF
             if (NEUZ_ANTIALIASING) Antialiasing.IsChecked = true;
             if (NEUZ_ANISOTROPIC) Anisotropique.IsChecked = true;
             if (NEUZ_MIPMAP) mipMapping.IsChecked = true;
-            int.TryParse(NEUZ_SIGHT, out int tempsight);
-            sightBar.Value = tempsight;
+            int.TryParse(NEUZ_DISTANT, out int tempdistant);
+            distantBar.Value = tempdistant;
             int.TryParse(NEUZ_SHADOW, out int tempshadow);
             shadowBar.Value = tempshadow;
             int.TryParse(NEUZ_DETAILS, out int tempdetail);
             detailBar.Value = tempdetail;
-            int.TryParse(NEUZ_TEXTURE, out int temptexture);
-            textBar.Value = temptexture;
+            int.TryParse(NEUZ_VIEW, out int tempview);
+            viewBar.Value = tempview;
             int.TryParse(nameDistance.FirstOrDefault(x => x.Value == NEUZ_NVD).Key, out int key);
             displayName.Value = key;
         }
@@ -137,8 +130,8 @@ namespace PatcherWPF
 
             string[] temp = NEUZ_RESOLUTION.Split('x');
             neuz[options["resolution"]] = "resolution " + temp[0] + " " + temp[1];
-            neuz[options["view"]] = "view " + NEUZ_SIGHT;
-            neuz[options["texture"]] = "texture " + NEUZ_TEXTURE;
+            neuz[options["view"]] = "view " + NEUZ_VIEW;
+            neuz[options["distant"]] = "distant " + NEUZ_DISTANT;
             neuz[options["shadow"]] = "shadow " + NEUZ_SHADOW;
             neuz[options["detail"]] = "detail " + NEUZ_DETAILS;
             neuz[options["NameViewDistance"]] = "NameViewDistance " + NEUZ_NVD;
@@ -162,12 +155,6 @@ namespace PatcherWPF
             OptionWin.Hide();
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
-        }
-
         private void choixResolution_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBoxItem typeItem = (ComboBoxItem)choixResolution.SelectedItem;
@@ -179,16 +166,16 @@ namespace PatcherWPF
             NEUZ_FULLSCREEN = (bool)fullscreen.IsChecked;
         }
 
-        private void sightBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void distantBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int val = (int)sightBar.Value;
-            NEUZ_SIGHT = val.ToString();
+            int val = (int)distantBar.Value;
+            NEUZ_DISTANT = val.ToString();
         }
 
-        private void textBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void viewBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int val = (int)textBar.Value;
-            NEUZ_TEXTURE = val.ToString();
+            int val = (int)viewBar.Value;
+            NEUZ_VIEW = val.ToString();
         }
 
         private void detailBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

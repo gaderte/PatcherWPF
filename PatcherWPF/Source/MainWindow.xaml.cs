@@ -41,6 +41,8 @@ namespace PatcherWPF
             InitializeComponent();
             startBtn.IsEnabled = false;
             optionW = new OptionWindow();
+            optionW.Top = this.Top + 62.5;
+            optionW.Left = this.Left + 197.5;
         }
 
         //Main function
@@ -358,6 +360,12 @@ namespace PatcherWPF
                 UseShellExecute = true
             };
             Process.Start(psi);
+        }
+
+        private void Patcher_LocationChanged(object sender, EventArgs e)
+        {
+            optionW.Top = this.Top + 62.5;
+            optionW.Left = this.Left + 197.5;
         }
     }
 }

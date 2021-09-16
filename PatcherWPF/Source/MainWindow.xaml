@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PatcherWPF"
         mc:Ignorable="d" Height="481" Width="750" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
-        MouseDown="Window_MouseDown" Loaded="window_Loaded"
+        MouseDown="Window_MouseDown" Loaded="window_Loaded" LocationChanged="Patcher_LocationChanged"
         AllowsTransparency="True" Icon="sylia_logo.png" Margin="0" Background="#00000000" BorderBrush="Black" BorderThickness="0">
     <Window.Resources>
         <!-- This style is used for buttons, to remove the WPF default 'animated' mouse over effect -->
