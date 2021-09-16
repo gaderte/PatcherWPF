@@ -32,7 +32,7 @@ namespace PatcherWPF
         bool _shown;
 
         Dictionary<string, int> options = new Dictionary<string, int>();
-        Dictionary<string, float> nameDistance;
+        Dictionary<string, string> nameDistance;
         string[] listeOptions;
 
         private static string NEUZ_RESOLUTION = "";
@@ -70,12 +70,12 @@ namespace PatcherWPF
             }
             listeOptions = new string[] { "resolution", "fullscreen", "texture", "view", "detail", "shadow",
                 "ANTIALIASING", "ANISOTROPIC", "MIPMAP", "NameViewDistance"};
-            nameDistance = new Dictionary<string, float>()
+            nameDistance = new Dictionary<string, string>()
             {
-                { "0", 40 },
-                { "1", 60 },
-                { "2", 80 },
-                { "3", 130 },
+                { "0", "40.000000" },
+                { "1", "60.000000" },
+                { "2", "80.000000" },
+                { "3", "130.000000" },
             };
             WriteLog("Chargement des options...\n");
             loadOptions(path);
@@ -287,8 +287,7 @@ namespace PatcherWPF
             NEUZ_ANTIALIASING = temp_antialiasing[1] == "0" ? false : true;
             NEUZ_ANISOTROPIC = temp_anisotropic[1] == "0" ? false : true;
             NEUZ_MIPMAP = temp_mipmap[1] == "0" ? false : true;
-            float.TryParse(temp_nvd[1], out float temp);
-            NEUZ_NVD = nameDistance[nameDistance.FirstOrDefault(x => x.Value == temp).Key].ToString();
+            NEUZ_NVD = nameDistance[nameDistance.FirstOrDefault(x => x.Value == temp_nvd[1]).Key].ToString();
 
             optionsDisplay();
         }
@@ -311,8 +310,7 @@ namespace PatcherWPF
             detailBar.Value = tempdetail;
             int.TryParse(NEUZ_TEXTURE, out int temptexture);
             textBar.Value = temptexture;
-            float.TryParse(NEUZ_NVD, out float tempnvd);
-            int.TryParse(nameDistance.FirstOrDefault(x => x.Value == tempnvd).Key, out int key);
+            int.TryParse(nameDistance.FirstOrDefault(x => x.Value == NEUZ_NVD).Key, out int key);
             displayName.Value = key;
         }
 
