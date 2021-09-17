@@ -23,6 +23,7 @@ namespace PatcherWPF
         private static readonly string NEWS_URL = "http://62.210.104.245/news/news.json";
 
         private static List<string> FILE_TO_DOWNLOAD = new List<string>();
+        private static List<DateTime> DATE_TO_EDIT = new List<DateTime>();
         private static int NBR_FILE_TO_DLL = 0;
         private static int NBR_ATM = 1;
 
@@ -30,6 +31,7 @@ namespace PatcherWPF
 
         private bool _shown;
         private OptionWindow optionW;
+        private Dictionary<string, string> heureAprem;
 
         public MainWindow()
         {
@@ -43,6 +45,21 @@ namespace PatcherWPF
             optionW = new OptionWindow();
             optionW.Top = this.Top + 62.5;
             optionW.Left = this.Left + 197.5;
+            heureAprem = new Dictionary<string, string>()
+            {
+                { "12", "12" },
+                { "13", "01" },
+                { "14", "02" },
+                { "15", "03" },
+                { "16", "04" },
+                { "17", "05" },
+                { "18", "06" },
+                { "19", "07" },
+                { "20", "08" },
+                { "21", "09" },
+                { "22", "10" },
+                { "23", "11" },
+            };
         }
 
         //Main function
@@ -191,6 +208,12 @@ namespace PatcherWPF
             //Comparaison entre fichiers existants et fichiers à télécharger
             string path = "./" + fichier;
             FileInfo test = new FileInfo(path);
+            string infoFileSys = test.LastWriteTime.ToString("yyyy-MM-dd HH:mm");
+            string[] infoFileSysSep = infoFileSys.Split(' ');
+            string dateFileSys = infoFileSysSep[0];
+            string heureFileSys = infoFileSysSep[1];
+            Console.WriteLine("Heure de la list : " + date + " " + heure);
+            Console.WriteLine("Heure systeme : " + dateFileSys + " " + heureFileSys);
             try
             {
                 long tailleSys = test.Length;
@@ -198,6 +221,46 @@ namespace PatcherWPF
                 {
                     FILE_TO_DOWNLOAD.Add(fichier);
                     NBR_FILE_TO_DLL++;
+                } else
+                {
+                    if(heure.Contains("a"))
+                    {
+                        heure = heure.Remove(5);
+                        if (heure != heureFileSys)
+                        {
+                            FILE_TO_DOWNLOAD.Add(fichier);
+                            string temp = date + " " + heure;
+                            DATE_TO_EDIT.Add(Convert.ToDateTime(temp));
+                            NBR_FILE_TO_DLL++;
+                            if (date != dateFileSys && !FILE_TO_DOWNLOAD.Contains(fichier))
+                            {
+                                FILE_TO_DOWNLOAD.Add(fichier);
+                                DATE_TO_EDIT.Add(Convert.ToDateTime(temp));
+                                NBR_FILE_TO_DLL++;
+                            }
+                        }
+                    } else
+                    {
+                        heure = heure.Remove(5);
+                        string[] tempheure = heure.Split(':');
+                        string key = heureAprem.FirstOrDefault(x => x.Value == tempheure[0]).Key;
+                        Console.WriteLine("Euh, la key c'est ça : " + key);
+                        string newHeure = key + ":" + tempheure[1];
+                        Console.WriteLine("Test de la condition, on compare : " + newHeure+ " et " + heureFileSys);
+                        if (newHeure != heureFileSys)
+                        {
+                            FILE_TO_DOWNLOAD.Add(fichier);
+                            string temp = date + " " + newHeure;
+                            DATE_TO_EDIT.Add(Convert.ToDateTime(temp));
+                            NBR_FILE_TO_DLL++;
+                            if (date != dateFileSys && !FILE_TO_DOWNLOAD.Contains(fichier))
+                            {
+                                FILE_TO_DOWNLOAD.Add(fichier);
+                                DATE_TO_EDIT.Add(Convert.ToDateTime(temp));
+                                NBR_FILE_TO_DLL++;
+                            }
+                        }
+                    }
                 }
             }
             catch (FileNotFoundException)
@@ -300,6 +363,8 @@ namespace PatcherWPF
                 dllLeft.Content = "Téléchargement terminé";
                 vitesseDLL.Content = "0.00 Mo/s";
             }
+            int index = FILE_TO_DOWNLOAD.IndexOf(filename);
+            File.SetLastWriteTime(filename, DATE_TO_EDIT[index]);
         }
 
         private void startBtn_Click(object sender, RoutedEventArgs e)
