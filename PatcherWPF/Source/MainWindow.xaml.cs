@@ -212,60 +212,39 @@ namespace PatcherWPF
             string[] infoFileSysSep = infoFileSys.Split(' ');
             string dateFileSys = infoFileSysSep[0];
             string heureFileSys = infoFileSysSep[1];
-            Console.WriteLine("Heure de la list : " + date + " " + heure);
-            Console.WriteLine("Heure systeme : " + dateFileSys + " " + heureFileSys);
+            //On convertit l'heure et la date en un format lisible
+            if (heure.Contains("p"))
+            {
+                string[] tempheure = heure.Split(':');
+                string key = heureAprem.FirstOrDefault(x => x.Value == tempheure[0]).Key;
+                heure = key + ":" + tempheure[1];
+            }
+            heure = heure.Remove(5);
             try
             {
                 long tailleSys = test.Length;
-                if (taille != tailleSys.ToString())
+                if (!File.Exists(fichier))
                 {
                     FILE_TO_DOWNLOAD.Add(fichier);
+                    DATE_TO_EDIT.Add(Convert.ToDateTime(date + " " + heure));
                     NBR_FILE_TO_DLL++;
-                } else
-                {
-                    if(heure.Contains("a"))
-                    {
-                        heure = heure.Remove(5);
-                        if (heure != heureFileSys)
-                        {
-                            FILE_TO_DOWNLOAD.Add(fichier);
-                            string temp = date + " " + heure;
-                            DATE_TO_EDIT.Add(Convert.ToDateTime(temp));
-                            NBR_FILE_TO_DLL++;
-                            if (date != dateFileSys && !FILE_TO_DOWNLOAD.Contains(fichier))
-                            {
-                                FILE_TO_DOWNLOAD.Add(fichier);
-                                DATE_TO_EDIT.Add(Convert.ToDateTime(temp));
-                                NBR_FILE_TO_DLL++;
-                            }
-                        }
-                    } else
-                    {
-                        heure = heure.Remove(5);
-                        string[] tempheure = heure.Split(':');
-                        string key = heureAprem.FirstOrDefault(x => x.Value == tempheure[0]).Key;
-                        Console.WriteLine("Euh, la key c'est ça : " + key);
-                        string newHeure = key + ":" + tempheure[1];
-                        Console.WriteLine("Test de la condition, on compare : " + newHeure+ " et " + heureFileSys);
-                        if (newHeure != heureFileSys)
-                        {
-                            FILE_TO_DOWNLOAD.Add(fichier);
-                            string temp = date + " " + newHeure;
-                            DATE_TO_EDIT.Add(Convert.ToDateTime(temp));
-                            NBR_FILE_TO_DLL++;
-                            if (date != dateFileSys && !FILE_TO_DOWNLOAD.Contains(fichier))
-                            {
-                                FILE_TO_DOWNLOAD.Add(fichier);
-                                DATE_TO_EDIT.Add(Convert.ToDateTime(temp));
-                                NBR_FILE_TO_DLL++;
-                            }
-                        }
+                }
+                else if (taille != tailleSys.ToString()) {
+                    FILE_TO_DOWNLOAD.Add(fichier);
+                    DATE_TO_EDIT.Add(Convert.ToDateTime(date + " " + heure));
+                    NBR_FILE_TO_DLL++;
+                } else {
+                    if (heure != heureFileSys || date != dateFileSys) {
+                        FILE_TO_DOWNLOAD.Add(fichier);
+                        DATE_TO_EDIT.Add(Convert.ToDateTime(date + " " + heure));
+                        NBR_FILE_TO_DLL++;
                     }
                 }
             }
             catch (FileNotFoundException)
             {
                 FILE_TO_DOWNLOAD.Add(fichier);
+                DATE_TO_EDIT.Add(Convert.ToDateTime(date + " " + heure));
                 NBR_FILE_TO_DLL++;
             }
         }
